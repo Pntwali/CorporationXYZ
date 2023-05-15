@@ -18,15 +18,15 @@ Corporation X,Y,Z's notification service provides APIs for clients to send SMS a
 
 ## Requirements
 
-Detailed functional and non-functional requirements for this project can be found in the [Requirements Document](./Requirements.md).
+Detailed functional and non-functional requirements for this project can be found in the [Requirements Document](./REQUIREMENTS.md).
 
 ## Architecture
 
-The system is built using a variety of Microsoft technologies including .NET Core, SQL Server, and Redis Cache. It uses a microservices architecture and containerization for scalability and reliability. For more details, please refer to the [Architecture Document](./Architecture.md).
+The system is built using a variety of Microsoft technologies including .NET Core, SQL Server, and Redis Cache. It uses a microservices architecture and containerization for scalability and reliability. For more details, please refer to the [Architecture Document](./ARCHITECTURE.md).
 
 ## Setup
 
-Instructions for setting up the development environment and deploying the service can be found in the [Setup Guide](./Setup.md).
+Instructions for setting up the development environment and deploying the service can be found in the [Setup Guide](./SETUP.md).
 
 ## Usage
 
@@ -34,7 +34,7 @@ The system provides APIs for sending notifications and managing client quotas. D
 
 ## Contributing
 
-We welcome contributions to the notification service project. Please refer to the [Contributing Guide](./Contributing.md) for more information about how to contribute.
+We welcome contributions to the notification service project. Please refer to the [Contributing Guide](./CONTRIBUTING.md) for more information about how to contribute.
 
 ## License
 
