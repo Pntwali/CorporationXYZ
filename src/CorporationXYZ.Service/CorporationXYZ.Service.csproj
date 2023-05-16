@@ -6,4 +6,15 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.1" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="6.0.0" />
+    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.30.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\CorporationXYZ.Contracts\CorporationXYZ.Contracts.csproj" />
+    <ProjectReference Include="..\..\CorporationXYZ.Service.Contracts\CorporationXYZ.Service.Contracts.csproj" />
+  </ItemGroup>
+
 </Project>

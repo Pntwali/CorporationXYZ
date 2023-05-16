@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>CorporationXYZ.Presentation</name>
+    </assembly>
+    <members>
+        <member name="M:CorporationXYZ.Presentation.Controllers.RootController.GetRoot(System.String)">
+            <summary>
+            Gets the list of all links to resources
+            </summary>
+            <returns>The companies list</returns>
+        </member>
+    </members>
+</doc>
