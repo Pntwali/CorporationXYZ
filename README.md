@@ -26,7 +26,7 @@ The system is built using a variety of Microsoft technologies including .NET Cor
 
 ## Setup
 
-Instructions for setting up the development environment and deploying the service can be found in the [Setup Guide](./SETUP.md).
+Instructions for setting up the development environment and deploying the service can be found in the [Setup Guide](./Setup.md).
 
 ## Usage
 
