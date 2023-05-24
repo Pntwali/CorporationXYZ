@@ -49,27 +49,28 @@ Save the file.
 
 ### Run the Applicatio
 
-```dotnet run``
+```dotnet run```
 
 ### To verify the correctness of the endpoints, you can execute the following command in PowerShell or your preferred shell:
 
- ```curl --location 'https://localhost:5001/api/authentication' \```
-```--header 'Content-Type: application/json' \```
-```--data-raw '{```
-  ```"firstname": "Jane",```
-  ```"lastname": "Doe",```
-  ```"username": "JaneDoe4",```
-  ```"password": "Password2000",```
-  ```"email": "janedoe4@mail.com",```
-  ```"phonenumber": "583-653",```
-  ```"roles": [```
-    ```"Administrator"```
-  ```]```
-```}' ```
+ ` curl --location 'https://localhost:5001/api/authentication' \
+  --header 'Content-Type: application/json' \
+  --data-raw '{
+  "firstname": "Jane",
+  "lastname": "Doe",
+  "username": "JaneDoe4",
+  "password": "Password2000",
+  "email": "janedoe4@mail.com",
+  "phonenumber": "583-653",
+  "roles": [
+    "Administrator"
+  ]
+}' `
 
 ### finally run the project automated 
 
 ``` cd CorporationXYZ/tests/CorporationXYZ.IntTests```
+
 ``` dotnet test CorporationXYZ.IntTests.csproj ```
 
 This command will run the tests specified in the `CorporationXYZ.IntTests.csproj` project file and provide the test results in the console.
