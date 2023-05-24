@@ -1,6 +1,7 @@
 ﻿using CorporationXYZ.Presentation.ActionFilters;
 using CorporationXYZ.Service.Contracts;
 using CorporationXYZ.Shared.DataTransferObjects;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -12,12 +13,14 @@ namespace CorporationXYZ.Presentation.Controllers
 {
     [Route("api/authentication")]
     [ApiController]
+    [AllowAnonymous]
     public class AuthenticationController : ControllerBase
     {
         private readonly IServiceManager _service;
         public AuthenticationController(IServiceManager service) => _service = service;
 
         [HttpPost]
+        [AllowAnonymous]
         [ServiceFilter(typeof(ValidationFilterAttribute))]
         public async Task<IActionResult> RegisterUser([FromBody] UserForRegistrationDto userForRegistration)
         {
@@ -35,6 +38,7 @@ namespace CorporationXYZ.Presentation.Controllers
         }
 
         [HttpPost("login")]
+        [AllowAnonymous]
         [ServiceFilter(typeof(ValidationFilterAttribute))]
         public async Task<IActionResult> Authenticate([FromBody] UserForAuthenticationDto user)
         {

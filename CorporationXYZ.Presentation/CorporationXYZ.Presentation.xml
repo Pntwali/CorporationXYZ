@@ -4,11 +4,29 @@
         <name>CorporationXYZ.Presentation</name>
     </assembly>
     <members>
+        <member name="M:CorporationXYZ.Presentation.Controllers.NotificationController.SendFakeSmsNotification(CorporationXYZ.Shared.DataTransferObjects.SmsNotificationDto)">
+            <summary>
+            Sends a an SMS notification.
+            </summary>
+        </member>
+        <member name="M:CorporationXYZ.Presentation.Controllers.NotificationController.SendFakeEmailNotification(CorporationXYZ.Shared.DataTransferObjects.EmailNotificationDto)">
+            <summary>
+            Sends a an email notification.
+            </summary>
+        </member>
         <member name="M:CorporationXYZ.Presentation.Controllers.RootController.GetRoot(System.String)">
             <summary>
             Gets the list of all links to resources
             </summary>
-            <returns>The companies list</returns>
+            <returns>The Resource access list</returns>
+        </member>
+        <member name="M:CorporationXYZ.Presentation.Controllers.UserController.SetUserPlan(System.Guid,System.Guid)">
+            <summary>
+            Sets the pricing plan for a user.
+            </summary>
+            <param name="userId">The ID of the user.</param>
+            <param name="planId">The ID of the pricing plan.</param>
+            <returns>A <see cref="T:System.Threading.Tasks.Task"/> representing the asynchronous operation.</returns>
         </member>
     </members>
 </doc>

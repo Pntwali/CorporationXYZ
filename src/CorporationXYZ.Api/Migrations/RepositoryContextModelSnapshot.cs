@@ -22,10 +22,336 @@ namespace CorporationXYZ.Main.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
 
+            modelBuilder.Entity("CorporationXYZ.Entities.Models.ApplicationRole", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("ConcurrencyStamp")
+                        .IsConcurrencyToken()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<string>("NormalizedName")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("NormalizedName")
+                        .IsUnique()
+                        .HasDatabaseName("RoleNameIndex")
+                        .HasFilter("[NormalizedName] IS NOT NULL");
+
+                    b.ToTable("AspNetRoles", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("fe617476-d8ee-4c41-b1c2-08dad1f7e9a4"),
+                            ConcurrencyStamp = "2dd896b0-c892-47e2-9cd3-c98778a32017",
+                            Name = "Manager",
+                            NormalizedName = "MANAGER"
+                        },
+                        new
+                        {
+                            Id = new Guid("668814e8-1eed-40ae-052b-08dad1fc717a"),
+                            ConcurrencyStamp = "d517966c-cd1c-465a-b7f6-d916bdaf626e",
+                            Name = "Administrator",
+                            NormalizedName = "ADMINISTRATOR"
+                        },
+                        new
+                        {
+                            Id = new Guid("ba2cd64a-e1c6-4238-052c-08dad1fc717a"),
+                            ConcurrencyStamp = "bdf1d534-b865-4562-94fc-5763f7896cb4",
+                            Name = "Consumer",
+                            NormalizedName = "CONSUMER"
+                        });
+                });
+
+            modelBuilder.Entity("CorporationXYZ.Entities.Models.AuditTrail", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Message")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("Timestamp")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("AuditTrails");
+                });
+
+            modelBuilder.Entity("CorporationXYZ.Entities.Models.BillingInformation", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<decimal>("TotalPrice")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId")
+                        .IsUnique();
+
+                    b.ToTable("BillingInformation");
+                });
+
+            modelBuilder.Entity("CorporationXYZ.Entities.Models.ClientRateLimit", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("MaxRequestsPerMinute")
+                        .HasColumnType("int");
+
+                    b.Property<int>("MaxRequestsPerSecond")
+                        .HasColumnType("int");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("ClientRateLimit");
+                });
+
+            modelBuilder.Entity("CorporationXYZ.Entities.Models.ClientRateLimitPolicy", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("Limit")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Period")
+                        .HasColumnType("int");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("ClientRateLimitPolicies");
+                });
+
+            modelBuilder.Entity("CorporationXYZ.Entities.Models.Notification", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Message")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("NotificationType")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Recipient")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Notifications");
+                });
+
+            modelBuilder.Entity("CorporationXYZ.Entities.Models.PricingPlan", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("MaxRequestsPerMinute")
+                        .HasColumnType("int");
+
+                    b.Property<int>("MaxRequestsPerMonth")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("PricingPlans");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("1431845e-b779-4310-8293-284b0727db41"),
+                            Description = "Basic plan with limited usage",
+                            MaxRequestsPerMinute = 2,
+                            MaxRequestsPerMonth = 10,
+                            Name = "Basic"
+                        },
+                        new
+                        {
+                            Id = new Guid("33269f38-6656-49f5-8c5e-e4efe71d8782"),
+                            Description = "Standard plan for medium usage",
+                            MaxRequestsPerMinute = 5,
+                            MaxRequestsPerMonth = 50,
+                            Name = "Standard"
+                        },
+                        new
+                        {
+                            Id = new Guid("23a92d2b-76dd-4bdd-80bb-02fb83cc1348"),
+                            Description = "Premium plan for high usage",
+                            MaxRequestsPerMinute = 10,
+                            MaxRequestsPerMonth = 100,
+                            Name = "Premium"
+                        });
+                });
+
+            modelBuilder.Entity("CorporationXYZ.Entities.Models.PricingPlanRate", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("NotificationType")
+                        .HasColumnType("int");
+
+                    b.Property<Guid>("PricingPlanId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<decimal>("Rate")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PricingPlanId");
+
+                    b.ToTable("PricingPlanRates");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("e928da80-0085-4dee-a19d-a10d6f42d0c1"),
+                            NotificationType = 1,
+                            PricingPlanId = new Guid("1431845e-b779-4310-8293-284b0727db41"),
+                            Rate = 0.05m
+                        },
+                        new
+                        {
+                            Id = new Guid("0e81cf44-1589-4c16-819f-93a862f9441e"),
+                            NotificationType = 2,
+                            PricingPlanId = new Guid("1431845e-b779-4310-8293-284b0727db41"),
+                            Rate = 0.01m
+                        },
+                        new
+                        {
+                            Id = new Guid("c055eec2-da47-4525-95df-7b4ec8255787"),
+                            NotificationType = 1,
+                            PricingPlanId = new Guid("33269f38-6656-49f5-8c5e-e4efe71d8782"),
+                            Rate = 0.03m
+                        },
+                        new
+                        {
+                            Id = new Guid("4be2775e-a613-470b-b38a-5f48c4e33925"),
+                            NotificationType = 2,
+                            PricingPlanId = new Guid("33269f38-6656-49f5-8c5e-e4efe71d8782"),
+                            Rate = 0.005m
+                        },
+                        new
+                        {
+                            Id = new Guid("3e3d0bb5-1d80-47d0-8243-3059c66a51fd"),
+                            NotificationType = 1,
+                            PricingPlanId = new Guid("23a92d2b-76dd-4bdd-80bb-02fb83cc1348"),
+                            Rate = 0.02m
+                        },
+                        new
+                        {
+                            Id = new Guid("c663dc95-7133-45ca-b814-b9f47a53300f"),
+                            NotificationType = 2,
+                            PricingPlanId = new Guid("23a92d2b-76dd-4bdd-80bb-02fb83cc1348"),
+                            Rate = 0.001m
+                        });
+                });
+
+            modelBuilder.Entity("CorporationXYZ.Entities.Models.Quota", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("MaxRequestsPerMonth")
+                        .HasColumnType("int");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Quota");
+                });
+
+            modelBuilder.Entity("CorporationXYZ.Entities.Models.UsageStatistics", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("Month")
+                        .HasColumnType("int");
+
+                    b.Property<int>("RequestCount")
+                        .HasColumnType("int");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId")
+                        .IsUnique();
+
+                    b.ToTable("UsageStatistics");
+                });
+
             modelBuilder.Entity("CorporationXYZ.Entities.Models.User", b =>
                 {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("int");
@@ -42,11 +368,9 @@ namespace CorporationXYZ.Main.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("FirstName")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("LastName")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("LockoutEnabled")
@@ -71,6 +395,9 @@ namespace CorporationXYZ.Main.Migrations
 
                     b.Property<bool>("PhoneNumberConfirmed")
                         .HasColumnType("bit");
+
+                    b.Property<Guid?>("PricingPlanId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("RefreshToken")
                         .HasColumnType("nvarchar(max)");
@@ -98,60 +425,12 @@ namespace CorporationXYZ.Main.Migrations
                         .HasDatabaseName("UserNameIndex")
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
+                    b.HasIndex("PricingPlanId");
+
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
-                {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("ConcurrencyStamp")
-                        .IsConcurrencyToken()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Name")
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
-
-                    b.Property<string>("NormalizedName")
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("NormalizedName")
-                        .IsUnique()
-                        .HasDatabaseName("RoleNameIndex")
-                        .HasFilter("[NormalizedName] IS NOT NULL");
-
-                    b.ToTable("AspNetRoles", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            Id = "159d751b-2776-42b6-936c-6f60d27246ef",
-                            ConcurrencyStamp = "e26644a6-db4c-45a9-9347-5b424094f57b",
-                            Name = "Manager",
-                            NormalizedName = "MANAGER"
-                        },
-                        new
-                        {
-                            Id = "903d1679-3c2b-4970-b8b2-29d1028f0271",
-                            ConcurrencyStamp = "cfec09a5-ba9e-4e77-9d18-62429d736605",
-                            Name = "Administrator",
-                            NormalizedName = "ADMINISTRATOR"
-                        },
-                        new
-                        {
-                            Id = "9013422a-ff00-4426-8721-ae93cebb77d9",
-                            ConcurrencyStamp = "76b108a5-f816-4990-b19f-e88394be38ce",
-                            Name = "Consumer",
-                            NormalizedName = "CONSUMER"
-                        });
-                });
-
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -165,9 +444,8 @@ namespace CorporationXYZ.Main.Migrations
                     b.Property<string>("ClaimValue")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("RoleId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<Guid>("RoleId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
 
@@ -176,7 +454,7 @@ namespace CorporationXYZ.Main.Migrations
                     b.ToTable("AspNetRoleClaims", (string)null);
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<System.Guid>", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -190,9 +468,8 @@ namespace CorporationXYZ.Main.Migrations
                     b.Property<string>("ClaimValue")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
 
@@ -201,7 +478,7 @@ namespace CorporationXYZ.Main.Migrations
                     b.ToTable("AspNetUserClaims", (string)null);
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<System.Guid>", b =>
                 {
                     b.Property<string>("LoginProvider")
                         .HasColumnType("nvarchar(450)");
@@ -212,9 +489,8 @@ namespace CorporationXYZ.Main.Migrations
                     b.Property<string>("ProviderDisplayName")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("LoginProvider", "ProviderKey");
 
@@ -223,13 +499,13 @@ namespace CorporationXYZ.Main.Migrations
                     b.ToTable("AspNetUserLogins", (string)null);
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<string>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<System.Guid>", b =>
                 {
-                    b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("RoleId")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<Guid>("RoleId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("UserId", "RoleId");
 
@@ -238,10 +514,10 @@ namespace CorporationXYZ.Main.Migrations
                     b.ToTable("AspNetUserRoles", (string)null);
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<System.Guid>", b =>
                 {
-                    b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("LoginProvider")
                         .HasColumnType("nvarchar(450)");
@@ -257,16 +533,113 @@ namespace CorporationXYZ.Main.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
+            modelBuilder.Entity("CorporationXYZ.Entities.Models.AuditTrail", b =>
                 {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
+                    b.HasOne("CorporationXYZ.Entities.Models.User", "User")
+                        .WithMany("AuditTrails")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("CorporationXYZ.Entities.Models.BillingInformation", b =>
+                {
+                    b.HasOne("CorporationXYZ.Entities.Models.User", "User")
+                        .WithOne("BillingInformation")
+                        .HasForeignKey("CorporationXYZ.Entities.Models.BillingInformation", "UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("CorporationXYZ.Entities.Models.ClientRateLimit", b =>
+                {
+                    b.HasOne("CorporationXYZ.Entities.Models.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("CorporationXYZ.Entities.Models.ClientRateLimitPolicy", b =>
+                {
+                    b.HasOne("CorporationXYZ.Entities.Models.User", "User")
+                        .WithMany("RateLimitPolicies")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("CorporationXYZ.Entities.Models.Notification", b =>
+                {
+                    b.HasOne("CorporationXYZ.Entities.Models.User", "User")
+                        .WithMany("Notifications")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("CorporationXYZ.Entities.Models.PricingPlanRate", b =>
+                {
+                    b.HasOne("CorporationXYZ.Entities.Models.PricingPlan", "PricingPlan")
+                        .WithMany("PricingPlanRates")
+                        .HasForeignKey("PricingPlanId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("PricingPlan");
+                });
+
+            modelBuilder.Entity("CorporationXYZ.Entities.Models.Quota", b =>
+                {
+                    b.HasOne("CorporationXYZ.Entities.Models.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("CorporationXYZ.Entities.Models.UsageStatistics", b =>
+                {
+                    b.HasOne("CorporationXYZ.Entities.Models.User", "User")
+                        .WithOne("UsageStatistics")
+                        .HasForeignKey("CorporationXYZ.Entities.Models.UsageStatistics", "UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("CorporationXYZ.Entities.Models.User", b =>
+                {
+                    b.HasOne("CorporationXYZ.Entities.Models.PricingPlan", "PricingPlan")
+                        .WithMany("Users")
+                        .HasForeignKey("PricingPlanId");
+
+                    b.Navigation("PricingPlan");
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
+                {
+                    b.HasOne("CorporationXYZ.Entities.Models.ApplicationRole", null)
                         .WithMany()
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<System.Guid>", b =>
                 {
                     b.HasOne("CorporationXYZ.Entities.Models.User", null)
                         .WithMany()
@@ -275,7 +648,7 @@ namespace CorporationXYZ.Main.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<System.Guid>", b =>
                 {
                     b.HasOne("CorporationXYZ.Entities.Models.User", null)
                         .WithMany()
@@ -284,9 +657,9 @@ namespace CorporationXYZ.Main.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<string>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<System.Guid>", b =>
                 {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
+                    b.HasOne("CorporationXYZ.Entities.Models.ApplicationRole", null)
                         .WithMany()
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -299,13 +672,33 @@ namespace CorporationXYZ.Main.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<System.Guid>", b =>
                 {
                     b.HasOne("CorporationXYZ.Entities.Models.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("CorporationXYZ.Entities.Models.PricingPlan", b =>
+                {
+                    b.Navigation("PricingPlanRates");
+
+                    b.Navigation("Users");
+                });
+
+            modelBuilder.Entity("CorporationXYZ.Entities.Models.User", b =>
+                {
+                    b.Navigation("AuditTrails");
+
+                    b.Navigation("BillingInformation");
+
+                    b.Navigation("Notifications");
+
+                    b.Navigation("RateLimitPolicies");
+
+                    b.Navigation("UsageStatistics");
                 });
 #pragma warning restore 612, 618
         }

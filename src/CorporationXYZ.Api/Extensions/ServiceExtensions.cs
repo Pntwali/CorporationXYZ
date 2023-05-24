@@ -1,11 +1,14 @@
-﻿using AspNetCoreRateLimit;
+﻿
+using AspNetCoreRateLimit;
 using CorporationXYZ.Contracts;
 using CorporationXYZ.Entities.ConfigurationModels;
 using CorporationXYZ.Entities.Models;
 using CorporationXYZ.LoggerService;
+using CorporationXYZ.Main.Extensions.Utility;
 using CorporationXYZ.Repository;
 using CorporationXYZ.Service;
 using CorporationXYZ.Service.Contracts;
+using Hangfire;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -14,6 +17,7 @@ using Microsoft.AspNetCore.Mvc.Versioning;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using StackExchange.Redis;
 using System.Text;
 
 namespace CorporationXYZ.Main.Extensions
@@ -93,31 +97,43 @@ namespace CorporationXYZ.Main.Extensions
             });
         }
 
-        public static void ConfigureRateLimitingOptions(this IServiceCollection services)
+
+
+        public static void ConfigureRateLimitingOptions(this IServiceCollection services, IConfiguration configuration)
         {
-            var rateLimitRules = new List<RateLimitRule>
+            services.AddOptions();
+            string redisConnectionUrl = null;
+            var redisEndpointUrl = (Environment.GetEnvironmentVariable("REDIS_ENDPOINT_URL") ?? "127.0.0.1:6379").Split(':');
+            var redisHost = redisEndpointUrl[0];
+            var redisPort = redisEndpointUrl[1];
+
+            var redisPassword = Environment.GetEnvironmentVariable("REDIS_PASSWORD");
+            if (redisPassword != null)
             {
-                        new RateLimitRule
-                            {
-                                Endpoint = "*",
-                                Limit = 30,
-                                Period = "5m"
-                            }
-            };
-            services.Configure<IpRateLimitOptions>(opt =>
+                redisConnectionUrl = $"{redisHost}:{redisPort},password={redisPassword}";
+            }
+            else
             {
-                opt.GeneralRules = rateLimitRules;
+                redisConnectionUrl = $"{redisHost}:{redisPort}";
+            }
+
+            services.AddStackExchangeRedisCache(options =>
+            {
+                var parsedRedisConnection = ConfigurationOptions.Parse(redisConnectionUrl);
+                options.ConfigurationOptions = parsedRedisConnection;
             });
-            services.AddSingleton<IRateLimitCounterStore,
-            MemoryCacheRateLimitCounterStore>();
-            services.AddSingleton<IIpPolicyStore, MemoryCacheIpPolicyStore>();
+
+            services.Configure<IpRateLimitOptions>(configuration.GetSection("IpRateLimit"));
+            services.AddSingleton<IIpPolicyStore, DistributedCacheIpPolicyStore>();
+            services.AddSingleton<IRateLimitCounterStore, DistributedCacheRateLimitCounterStore>();
             services.AddSingleton<IRateLimitConfiguration, RateLimitConfiguration>();
             services.AddSingleton<IProcessingStrategy, AsyncKeyLockProcessingStrategy>();
         }
 
+
         public static void ConfigureIdentity(this IServiceCollection services)
         {
-            var builder = services.AddIdentity<User, IdentityRole>(o =>
+            var builder = services.AddIdentity<User, ApplicationRole>(o =>
             {
                 o.Password.RequireDigit = true;
                 o.Password.RequireLowercase = false;
@@ -130,8 +146,14 @@ namespace CorporationXYZ.Main.Extensions
             .AddDefaultTokenProviders();
         }
 
-        public static void ConfigureJWT(this IServiceCollection services, IConfiguration
-configuration)
+        public static void ConfigureHangFire(this IServiceCollection services, IConfiguration configuration)
+        {
+            services.AddHangfire(x => x.UseSqlServerStorage(configuration.GetConnectionString("HangFiresqlConnection")));
+            services.AddHangfireServer();
+        }
+
+
+        public static void ConfigureJWT(this IServiceCollection services, IConfiguration configuration)
         {
             var jwtConfiguration = new JwtConfiguration();
             configuration.Bind(jwtConfiguration.Section, jwtConfiguration);
@@ -160,6 +182,9 @@ configuration)
         public static void AddJwtConfiguration(this IServiceCollection services,
         IConfiguration configuration) =>
         services.Configure<JwtConfiguration>(configuration.GetSection("JwtSettings"));
+
+        //public static void AddRatelimitService(this IServiceCollection services)
+        //    => services.AddScoped<IClientRateLimitService, ClientRateLimitService>();
 
         public static void ConfigureSwagger(this IServiceCollection services)
         {
