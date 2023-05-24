@@ -8,7 +8,7 @@
 
 ### Clone the Repository
 ```shell
-git clone https://github.com/your-username/your-repo.git
+https://github.com/Pntwali/CorporationXYZ.git
 ```
 
 ### Navigate to the Project Directory
