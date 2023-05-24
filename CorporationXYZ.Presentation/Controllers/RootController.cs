@@ -1,19 +1,25 @@
 ﻿using CorporationXYZ.Entities.LinkModels;
+using CorporationXYZ.Service.Contracts;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
+using System.Security.Claims;
 
 namespace CorporationXYZ.Presentation.Controllers
 {
     [Route("api")]
     [ApiController]
     [ApiExplorerSettings(GroupName = "v1")]
-    [Authorize(Roles = "Manager")]
     public class RootController : ControllerBase
     {
         private readonly LinkGenerator _linkGenerator;
+        private readonly IServiceManager _service;
 
-        public RootController(LinkGenerator linkGenerator) => _linkGenerator = linkGenerator;
+        public RootController(LinkGenerator linkGenerator, IServiceManager service)
+        {
+            _linkGenerator = linkGenerator;
+            _service = service;
+        }
 
         /// <summary>
         /// Gets the list of all links to resources
@@ -51,5 +57,17 @@ namespace CorporationXYZ.Presentation.Controllers
             }
             return NoContent();
         }
+
+        [HttpGet("clientRateLimitPolicy")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(500)]
+        public async Task<IActionResult> GetClientRateLimitPolicyAsync()
+        {
+            var CurrentLoggedInUserId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            return Ok();
+        }
+
+
     }
 }

@@ -48,6 +48,13 @@ namespace CorporationXYZ.Service
         public async Task<IdentityResult> RegisterUser(UserForRegistrationDto userForRegistration)
         {
             var user = _mapper.Map<User>(userForRegistration);
+            user.PricingPlan = null;
+            user.RateLimitPolicies = null;
+            user.UsageStatistics = null;
+            user.BillingInformation = null;
+            user.Notifications = null;
+            user.AuditTrails = null;
+
             var result = await _userManager.CreateAsync(user,
             userForRegistration.Password);
             if (result.Succeeded)
@@ -78,7 +85,8 @@ namespace CorporationXYZ.Service
         {
             var claims = new List<Claim>
              {
-             new Claim(ClaimTypes.Name, _user.UserName)
+             new Claim(ClaimTypes.Name, _user.UserName),
+             new Claim(ClaimTypes.NameIdentifier, _user.Id.ToString()),
              };
             var roles = await _userManager.GetRolesAsync(_user);
             foreach (var role in roles)
